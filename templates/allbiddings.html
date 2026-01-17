@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>All Biddings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{% static 'styles/allbiddings.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>All Biddings for {{ product.product_name }}</h1>
+<p>
+    Available Quantity: <b>{{ product.available_quantity }} kg</b> |
+    Base Price: <b>₹{{ product.base_price }} / kg</b>
+</p>
+
+<!-- SUMMARY -->
+<div class="summary">
+    <div class="summary-card">Total Bids <span>{{ summary.total_bids }}</span></div>
+    <div class="summary-card">Highest Bid <span>₹{{ summary.highest_bid }}</span></div>
+    <div class="summary-card">Average Bid <span>₹{{ summary.average_bid }}</span></div>
+</div>
+
+<!-- SEARCH & FILTER -->
+<div class="filters">
+    <input type="text" id="searchInput" placeholder="Search bidder name">
+    <select id="filterSelect">
+        <option value="">Sort by</option>
+        <option value="price">Highest Price</option>
+        <option value="quantity">Highest Quantity</option>
+        <option value="profit">Highest Profit</option>
+    </select>
+</div>
+
+<div class="main">
+
+<!-- left bids -->
+<div id="bidList">
+{% for bid in bids %}
+<div class="bid-card"
+     data-bid="{{ bid.bidding_id }}"
+     data-name="{{ bid.buyer_id }}"
+     data-price="{{ bid.bid_price }}"
+     data-quantity="{{ bid.bid_quantity }}"
+     id="{{ bid.bidding_id }}">
+
+    <div class="avatar"
+         style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+        <img src="{{ bid.user_photo_url }}" alt="Buyer Photo"
+             style="width:100%;height:100%;object-fit:cover;">
+    </div>
+
+    <div class="bid-info">
+        <b>Buyer ID: {{ bid.buyer_id }}</b><br>
+        ₹{{ bid.bid_price }} / kg · {{ bid.bid_quantity }} kg<br>
+        Profit: ₹{{ bid.profit }}
+
+        {% if bid.verdict == "pending" %}
+        <div class="actions">
+            <button class="accept-btn" onclick="accepted('{{ bid.bidding_id }}')">Accept</button>
+            <button class="reject-btn" onclick="rejected('{{ bid.bidding_id }}')">Reject</button>
+        </div>
+
+        {% elif bid.verdict == "accepted" %}
+        <div class="buyer-details"
+             style="
+                margin-top:10px;
+                padding:10px;
+                border:1px solid #4CAF50;
+                border-radius:8px;
+                background:#f4fff6;
+                font-size:14px;
+                width:100%;
+                box-sizing:border-box;
+             ">
+
+            <!-- ✅ ORDER ID ADDED -->
+            <div style="margin-bottom:6px;">
+                Order ID: <b>{{ bid.order_id }}</b>
+            </div>
+
+            <div style="margin-bottom:4px;">
+                Buyer Name: <b>{{ bid.buyer_name }}</b>
+            </div>
+            <div style="margin-bottom:8px;">
+                Buyer Contact: <b>{{ bid.buyer_contact_number }}</b>
+            </div>
+
+            <button
+                onclick="paymentandorderdetails('{{ bid.order_id }}')"
+                style="
+                    padding:6px 12px;
+                    background:#4CAF50;
+                    color:#fff;
+                    border:none;
+                    border-radius:6px;
+                    cursor:pointer;
+                    font-size:13px;
+                ">
+                Payment & Order Details
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <span class="badge {{ bid.verdict }}">{{ bid.verdict }}</span>
+</div>
+{% endfor %}
+</div>
+
+
+<!-- RIGHT: ANALYTICS -->
+<div class="analytics">
+
+<!-- WEEKLY DATA HOLDER -->
+<div id="weeklyData"
+     data-w1-count="{{ weekly.week1.bids_count }}"
+     data-w1-high="{{ weekly.week1.highest_bid }}"
+     data-w2-count="{{ weekly.week2.bids_count }}"
+     data-w2-high="{{ weekly.week2.highest_bid }}"
+     data-w3-count="{{ weekly.week3.bids_count }}"
+     data-w3-high="{{ weekly.week3.highest_bid }}"
+     data-w4-count="{{ weekly.week4.bids_count }}"
+     data-w4-high="{{ weekly.week4.highest_bid }}">
+</div>
+
+<div class="chart-box">
+    <h4>Last 30 Days Bid Count</h4>
+    <canvas id="countChart"></canvas>
+</div>
+
+<div class="chart-box">
+    <h4>Last 30 Days Highest Bid</h4>
+    <canvas id="priceChart"></canvas>
+</div>
+
+<div class="chart-box">
+    <h4>Bid Distribution</h4>
+    <canvas id="distChart"></canvas>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script src="{% static 'scripts/allbiddings.js' %}"></script>
+</body>
+</html>

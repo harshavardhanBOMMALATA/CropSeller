@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edit Product</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'styles/editproduct.css' %}">
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Edit Product</h2>
+    <p>Update product details</p>
+</div>
+
+<div class="container">
+
+<form id="addProductForm">
+
+    <!-- IMAGE -->
+    <div class="upload-box" id="uploadBox">
+        <p>📷 Click to upload product image</p>
+        <small>JPG / PNG · Max 5MB</small>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+
+        {% if product.photo_url %}
+            <img id="preview" src="{{ product.photo_url }}">
+        {% else %}
+            <img id="preview" style="display:none;">
+        {% endif %}
+    </div>
+
+    <!-- FORM -->
+    <div class="form-grid">
+        
+        <input type="hidden" id="product_id" value="{{ product.product_id }}">
+
+        <div class="field">
+            <label>Product Name</label>
+            <input id="product_name" type="text" value="{{ product.product_name }}" required>
+        </div>
+
+        <div class="field">
+            <label>Quantity (kg)</label>
+            <input id="quantity" type="number" value="{{ product.quantity }}" required>
+        </div>
+
+        <div class="field">
+            <label>Price per kg (₹)</label>
+            <input id="price_per_kg" type="number" value="{{ product.price_per_kg }}" required>
+        </div>
+
+        <div class="field">
+            <label>Location</label>
+            <input id="location" type="text" value="{{ product.location }}">
+        </div>
+
+        <div class="field">
+            <label>Delivery</label>
+            <input id="delivery" type="text" value="{{ product.delivery }}">
+        </div>
+
+        <div class="field">
+            <label>Supply Capacity</label>
+            <input id="supply_capacity" type="text" value="{{ product.supply_capacity }}">
+        </div>
+
+        <div class="field">
+            <label>FSSAI License</label>
+            <input id="fssai_license" type="text" value="{{ product.fssai_license }}">
+        </div>
+
+        <div class="field">
+            <label>Organic Certified</label>
+            <select id="organic_certified">
+                <option value="">Select</option>
+                <option value="Yes" {% if product.organic_certified == "Yes" %}selected{% endif %}>Yes</option>
+                <option value="No" {% if product.organic_certified == "No" %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Moisture</label>
+            <input id="moisture" type="text" value="{{ product.moisture }}">
+        </div>
+
+        <div class="field">
+            <label>Crop Year</label>
+            <input id="crop_year" type="text" value="{{ product.crop_year }}">
+        </div>
+
+        <div class="field">
+            <label>Packaging</label>
+            <input id="packaging" type="text" value="{{ product.packaging }}">
+        </div>
+
+        <div class="field full">
+            <label>Description</label>
+            <textarea id="description">{{ product.description }}</textarea>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+        <button type="button" class="cancel" onclick="window.history.back()">Cancel</button>
+        <button type="submit" class="submit">Update Product</button>
+    </div>
+
+</form>
+
+<div id="toast"></div>
+</div>
+
+<script src="{% static 'scripts/editproduct.js' %}"></script>
+</body>
+</html>

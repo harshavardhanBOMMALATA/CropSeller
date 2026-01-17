@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Order Details</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{% static 'styles/orderdetails.css' %}">
+<script src="{% static 'scripts/orderdetails.js' %}" defer></script>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Order Details</h1>
+</div>
+
+<div class="container">
+<div class="grid">
+
+<!-- LEFT CARD -->
+<div class="card">
+
+    <h2>Order & Buyer Details</h2>
+
+    <p><b>Order ID:</b> {{ order_id }}</p>
+
+    <div class="row">
+        <div class="avatar"></div>
+        <div>
+            <strong>{{ buyer_name }}</strong><br>
+            Buyer ID: {{ buyer_id }}<br>
+            📞 {{ buyer_phone }} &nbsp; ✉️ {{ buyer_email }}
+        </div>
+    </div>
+
+    <p>📍 {{ buyer_address }}</p>
+
+    <!-- STATUS -->
+    <div class="status-wrapper">
+        <div class="status-item"><div class="status-dot active"></div>Placed</div>
+        <div class="status-item"><div class="status-dot active"></div>Paid</div>
+        <div class="status-item"><div class="status-dot active"></div>Shipped</div>
+        <div class="status-item"><div class="status-dot"></div>Delivered</div>
+    </div>
+
+    <hr>
+
+    <!-- PRODUCT + MAP -->
+    <div class="product-map">
+
+        <div class="product">
+            <img src="{{ photo_url }}" alt="Product">
+            <div>
+                <strong>{{ product_name }}</strong><br>
+                Quantity: {{ quantity }} kg<br>
+                Price: ₹{{ price_per_kg }} / kg<br>
+                <strong>Total: ₹{{ total_price }}</strong><br><br>
+                <strong>Order Status:</strong>
+                <span class="badge">{{ order_status }}</span>
+            </div>
+        </div>
+
+        <div class="map">
+            <iframe
+                src="https://www.google.com/maps?q={{ destination_latitude }},{{ destination_longitude }}&output=embed">
+            </iframe>
+        </div>
+
+    </div>
+</div>
+
+<!-- RIGHT COLUMN -->
+<div>
+
+<!-- TRANSACTION -->
+<div class="card">
+    <h2>Transaction Details</h2>
+
+    {% if transaction_id %}
+        <p><b>Transaction ID:</b> {{ transaction_id }}</p>
+        <p><b>Amount:</b> ₹{{ transaction_amount }}</p>
+        <p><b>Date:</b> {{ transaction_date }}</p>
+        <p><b>Payment Method:</b> {{ payment_method }}</p>
+        <p><b>Status:</b> {{ transaction_status }}</p>
+        <button class="download-btn">Download Receipt</button>
+    {% else %}
+        <p>No transaction available</p>
+    {% endif %}
+</div>
+
+<br>
+
+<!-- TRANSPORTATION -->
+<div class="card green">
+    <h2>Transportation Details</h2>
+
+    {% if transportation_id %}
+        <div class="row">
+            <div class="avatar"></div>
+            <div>
+                <strong>{{ driver_name }}</strong><br>
+                Driver Phone: {{ driver_phone }}
+            </div>
+        </div>
+
+        <p>🚚 Truck: {{ vehicle_number }}</p>
+        <p>📍 Current Location: {{ current_latitude }}, {{ current_longitude }}</p>
+        <p>🎯 Destination: {{ destination_latitude }}, {{ destination_longitude }}</p>
+    {% else %}
+        <p>No transportation assigned</p>
+    {% endif %}
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

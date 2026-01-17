@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CropSeller | Create Account</title>
+    <link rel="stylesheet" href="{% static 'styles/signup.css' %}">
+</head>
+<body>
+<div class="login-container">
+    <h2>Create Account</h2>
+
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+    <input type="text" name="address" placeholder="Address" required>
+
+    <button id="signupBtn">
+        <span id="btnText">Create Account</span>
+        <div class="spinner" id="spinner"></div>
+    </button>
+
+    <div class="signup-link">
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+    <div class="footer-text" id="failuremessage">
+    </div>
+    <div class="footer-text">
+        Agriculture Product Selling Platform
+    </div>
+</div>
+
+
+<script src="{% static 'scripts/signup.js' %}"></script>
+
+</body>
+</html>

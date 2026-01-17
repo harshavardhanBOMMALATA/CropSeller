@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Orders</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'styles/myorders.css' %}">
+</head>
+
+<body>
+<div class="container">
+
+<h1>My Orders</h1>
+
+<!-- SEARCH BAR -->
+<div style="margin:10px 0 15px;">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by product name..."
+        onkeyup="searchByProductName()"
+        style="
+            width:100%;
+            padding:10px 14px;
+            border-radius:8px;
+            border:1px solid #d1d5db;
+            font-size:14px;
+            outline:none;
+        "
+    >
+</div>
+
+<!-- Filters -->
+<div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="processing">Processing</button>
+    <button class="filter-btn" data-filter="delivered">Delivered</button>
+</div>
+
+<div class="orders" id="ordersContainer">
+
+{% for order in orders %}
+<div class="order-card" data-status="{{ order.verdict }}">
+    <img src="{{ order.product_image }}" alt="{{ order.product_name }}">
+
+    <div class="order-info">
+        <h3 class="product-name">{{ order.product_name }}</h3>
+
+        <div class="row">
+            Quantity: <span>{{ order.bid_quantity }} kg</span>
+        </div>
+
+        <div class="row">
+            Price: <span>₹{{ order.bid_price }}/kg</span>
+        </div>
+
+        <div class="row">
+            Location: <span>{{ order.product_location }}</span>
+        </div>
+
+        <div class="order-footer">
+            
+            <div class="status {{ order.verdict }}">
+                {{ order.verdict|capfirst }}
+            </div>
+
+            <a href="/transactions/orderdetails/{{ order.order_id }}/{{ order.product_id }}/"
+               class="action-btn"
+               style="display:inline-block;
+               padding:8px 14px;
+               background:#2e7d32;
+               color:#fff;
+               text-decoration:none;
+               border-radius:6px;
+               font-size:14px;
+               font-weight:500;
+               transition:all 0.25s ease;"
+               onmouseover="this.style.background='#256428'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)'"
+               onmouseout="this.style.background='#2e7d32'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+               Track Order
+            </a>
+
+        </div>
+
+    </div>
+</div>
+{% empty %}
+<p>No orders found.</p>
+{% endfor %}
+
+</div>
+</div>
+
+<script src="{% static 'scripts/myorders.js' %}"></script>
+
+<!-- INLINE SEARCH SCRIPT -->
+<script>
+function searchByProductName() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".order-card");
+
+    cards.forEach(card => {
+        const productName = card.querySelector(".product-name").innerText.toLowerCase();
+        card.style.display = productName.includes(query) ? "" : "none";
+    });
+}
+</script>
+
+</body>
+</html>

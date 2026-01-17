@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Product</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{% static 'styles/addproduct.css' %}">
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Add Product</h2>
+    <p>Fill all product details</p>
+</div>
+
+<div class="container">
+
+<form id="addProductForm">
+
+    <!-- IMAGE -->
+    <div class="upload-box" id="uploadBox">
+        <p>📷 Click to upload product image</p>
+        <small>JPG / PNG · Max 5MB</small>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <img id="preview" style="display:none;">
+        
+    </div>
+
+    <!-- FORM -->
+    <div class="form-grid">
+
+        <div class="field">
+            <label>Product Name</label>
+            <input id="product_name" type="text" placeholder="Eg: Organic Tomatoes" required>
+        </div>
+
+        <div class="field">
+            <label>Quantity (kg)</label>
+            <input id="quantity" type="number" placeholder="Eg: 500" required>
+        </div>
+
+        <div class="field">
+            <label>Price per kg (₹)</label>
+            <input id="price_per_kg" type="number" placeholder="Eg: 40" required>
+        </div>
+
+        <div class="field">
+            <label>Location</label>
+            <input id="location" type="text" placeholder="Eg: Guntur, Andhra Pradesh">
+        </div>
+
+        <div class="field">
+            <label>Delivery</label>
+            <input id="delivery" type="text" placeholder="Eg: Door delivery / Pickup">
+        </div>
+
+        <div class="field">
+            <label>Supply Capacity</label>
+            <input id="supply_capacity" type="text" placeholder="Eg: 1000 kg/month">
+        </div>
+
+        <div class="field">
+            <label>FSSAI License</label>
+            <input id="fssai_license" type="text" placeholder="Eg: 12345678901234">
+        </div>
+
+        <div class="field">
+            <label>Organic Certified</label>
+            <select id="organic_certified">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Moisture</label>
+            <input id="moisture" type="text" placeholder="Eg: 12%">
+        </div>
+
+        <div class="field">
+            <label>Crop Year</label>
+            <input id="crop_year" type="text" placeholder="Eg: 2024">
+        </div>
+
+        <div class="field">
+            <label>Packaging</label>
+            <input id="packaging" type="text" placeholder="Eg: Gunny bags / Boxes">
+        </div>
+
+        <div class="field full">
+            <label>Description</label>
+            <textarea id="description" placeholder="Brief description about the product"></textarea>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+        <button type="button" class="cancel" onclick="window.history.back()">Cancel</button>
+        <button type="submit" class="submit">Add Product</button>
+    </div>
+
+</form>
+<div id="toast"></div>
+
+
+</div>
+
+<script src="{% static 'scripts/addproduct.js' %}"></script>
+</body>
+</html>

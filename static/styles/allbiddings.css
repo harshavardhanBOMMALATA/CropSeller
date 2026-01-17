@@ -1,0 +1,196 @@
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#eaf5e6;
+    color:#1f2937;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.container{
+    max-width:1300px;
+    margin:30px auto;
+    padding:10px;
+}
+
+/* =========================
+   SUMMARY CARDS (FIXED)
+========================= */
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr)); /* NEVER BREAK */
+    gap:16px;
+    margin:18px 0;
+}
+
+.summary-card{
+    background:#ffffff;
+    padding:16px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    font-weight:bold;
+    white-space:nowrap; /* prevent text wrapping */
+}
+
+.summary-card span{
+    color:#16a34a;
+    font-size:20px;
+}
+
+/* =========================
+   SEARCH & FILTER
+========================= */
+.filters{
+    display:flex;
+    gap:14px;
+    margin:18px 0;
+    flex-wrap:wrap;
+}
+
+/* SEARCH INPUT */
+.filters input{
+    flex:1;
+    min-width:260px;
+    padding:14px 18px;
+    border-radius:12px;
+    border:1px solid #bbf7d0;
+    font-size:15px;
+}
+
+/* SELECT FIX (ARROW INSIDE) */
+.filters select{
+    min-width:220px;
+    padding:14px 44px 14px 18px; /* space for arrow */
+    border-radius:12px;
+    border:1px solid #bbf7d0;
+    font-size:15px;
+    background-color:#ffffff;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    background-image:
+        url("data:image/svg+xml;utf8,<svg fill='%2316a34a' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+}
+
+/* =========================
+   MAIN GRID
+========================= */
+.main{
+    display:grid;
+    grid-template-columns:2.2fr 1.5fr;
+    gap:24px;
+}
+
+/* =========================
+   BID CARDS
+========================= */
+.bid-card{
+    background:#ffffff;
+    border-radius:16px;
+    padding:16px;
+    display:flex;
+    gap:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:16px;
+    align-items:flex-start;
+}
+
+.avatar{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#d1fae5;
+}
+
+.bid-info{
+    flex:1;
+}
+
+.badge{
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    color:#ffffff;
+}
+
+.pending{ background:#f59e0b; }
+.accepted{ background:#16a34a; }
+.rejected{ background:#6b7280; }
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.actions{
+    margin-top:8px;
+    display:flex;
+    gap:10px;
+}
+
+.accept-btn{
+    background:#16a34a;
+    color:#ffffff;
+    border:none;
+    padding:8px 14px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.reject-btn{
+    background:#dc2626;
+    color:#ffffff;
+    border:none;
+    padding:8px 14px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* =========================
+   ANALYTICS
+========================= */
+.analytics{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+/* =========================
+   CHART BOX
+========================= */
+.chart-box{
+    background:#ffffff;
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.chart-box h4{
+    margin:0 0 12px;
+    font-size:15px;
+}
+
+.chart-box canvas{
+    width:100% !important;
+    height:220px !important;
+    display:block;
+}
+
+#distChart{
+    height:240px !important;
+}
+
+/* =========================
+   RESPONSIVE (SAFE)
+========================= */
+@media(max-width:900px){
+    .main{
+        grid-template-columns:1fr;
+    }
+    /* SUMMARY stays 3 cards ALWAYS */
+}

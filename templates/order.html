@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/order.css' %}">
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Order Details</h2>
+    <p>Order ID: {{ order.order_id }}</p>
+</div>
+
+<div class="container">
+
+    <div class="grid">
+
+        <!-- ORDER + TRANSACTION -->
+        <div class="card">
+            <h3>Order Information</h3>
+
+            <img class="product-img" src="{{ order.product_image }}" alt="product">
+
+            <div class="title">{{ order.product_name }}</div>
+            <div class="sub">{{ order.product_location }}</div>
+
+            <div class="row">
+                <span>Quantity</span>
+                <span>{{ order.bid_quantity }} kg</span>
+            </div>
+
+            <div class="row">
+                <span>Bid Price</span>
+                <span>₹{{ order.bid_price }} / kg</span>
+            </div>
+
+            <div class="status {{ order.verdict }}">
+                {{ order.verdict|capfirst }}
+            </div>
+
+            <div class="section">
+                <h4>Transaction Details</h4>
+
+                <div class="row">
+                    <span>Transaction ID</span>
+                    <span>{{ order.transaction.transaction_id }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Payment Method</span>
+                    <span>{{ order.transaction.payment_method }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Amount</span>
+                    <span>₹{{ order.transaction.amount }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Status</span>
+                    <span>{{ order.transaction.status|capfirst }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Date</span>
+                    <span>{{ order.transaction.transaction_date }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRACKING -->
+        <div class="card">
+            <h3>Tracking Information</h3>
+
+            <div class="row">
+                <span>Current</span>
+                <span>{{ order.current_latitude }}, {{ order.current_longitude }}</span>
+            </div>
+
+            <div class="row">
+                <span>Target</span>
+                <span>{{ order.target_latitude }}, {{ order.target_longitude }}</span>
+            </div>
+
+            <div class="row">
+                <span>Status</span>
+                <span>{{ order.verdict|capfirst }}</span>
+            </div>
+
+            <div class="map-preview"
+                 data-start-lat="{{ order.current_latitude }}"
+                 data-start-lng="{{ order.current_longitude }}"
+                 data-end-lat="{{ order.target_latitude }}"
+                 data-end-lng="{{ order.target_longitude }}"
+                 onclick="openGoogleMaps(this)">
+
+                <iframe
+                    src="https://maps.google.com/maps?q={{ order.current_latitude }},{{ order.current_longitude }}&z=7&output=embed"
+                    loading="lazy">
+                </iframe>
+
+                <div class="map-overlay">
+                    Open in Google Maps
+                </div>
+            </div>
+
+            <div class="section">
+                <h4>Seller Details</h4>
+
+                <div class="row">
+                    <span>Name</span>
+                    <span>{{ order.seller.name }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Phone</span>
+                    <span>{{ order.seller.phone }}</span>
+                </div>
+
+                <div class="row">
+                    <span>Location</span>
+                    <span>{{ order.seller.location }}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline">
+    <div class="line">
+        <div class="progress {{ order.verdict }}"></div>
+    </div>
+
+    <div class="steps">
+        <div class="step">📦 Placed</div>
+        <div class="step">🛵 Transit</div>
+        <div class="step">😊 Delivered</div>
+    </div>
+</div>
+
+<script src="{% static 'scripts/order.js' %}"></script>
+</body>
+</html>   

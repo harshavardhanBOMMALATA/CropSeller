@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Biddings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'styles/biddings.css' %}">
+
+<style>
+/* 🔍 Search bar CSS (added only) */
+.search-box {
+    margin: 12px 0 18px 0;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #2e7d32;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>My Biddings</h1>
+
+<!-- 🔍 Search Bar (added only) -->
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by product name...">
+</div>
+
+<div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="success">Success</button>
+    <button class="filter-btn" data-filter="pending">Pending</button>
+    <button class="filter-btn" data-filter="failure">Failure</button>
+</div>
+
+<div class="biddings" id="biddingsContainer">
+
+{% for bid in biddings %}
+<div class="bid-card" data-status="{{ bid.verdict }}">
+    <img src="{{ bid.photo_url }}" alt="{{ bid.product_name }}">
+
+    <div class="bid-info">
+        <h3>{{ bid.product_name }}</h3>
+
+        <div class="row">
+            Delivery Quantity: <span>{{ bid.available_quantity }} kg</span>
+        </div>
+        <div class="row">
+            Ordered Quantity: <span>{{ bid.ordered_quantity }} kg</span>
+        </div>
+
+        <div class="price-row">
+            <div>Bidding Price: ₹{{ bid.bid_price }}/kg</div>
+            <div>Actual Price: ₹{{ bid.actual_price }}/kg</div>
+        </div>
+
+        {% if bid.verdict == "success" %}
+        <!-- ⭐ Special Seller Card -->
+        <div style="
+            margin-top:10px;
+            padding:10px;
+            border:1px dashed #4CAF50;
+            border-radius:8px;
+            background:#f4fff6;
+            font-size:14px;
+        ">
+            <div style="font-weight:600;color:#2e7d32;margin-bottom:6px;">
+                Seller Details
+            </div>
+            <div>🆔 <b>{{ bid.seller_id }}</b></div>
+            <div>👤 <b>{{ bid.seller_name }}</b></div>
+            <div>📞 <b>{{ bid.seller_contact_number }}</b></div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="status {{ bid.verdict }}">
+        {{ bid.verdict|capfirst }}
+    </div>
+</div>
+{% empty %}
+<p>No biddings found.</p>
+{% endfor %}
+
+</div>
+</div>
+
+<script src="{% static 'scripts/biddings.js' %}"></script>
+
+<script>
+/* 🔍 Search JS (added only) */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("searchInput");
+    const bidCards = document.querySelectorAll(".bid-card");
+
+    searchInput.addEventListener("keyup", function () {
+        const query = this.value.toLowerCase();
+
+        bidCards.forEach(card => {
+            const title = card.querySelector("h3").innerText.toLowerCase();
+            card.style.display = title.includes(query) ? "" : "none";
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>

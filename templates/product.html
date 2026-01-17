@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.product_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'styles/product.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="card grid">
+
+        <!-- LEFT SECTION -->
+        <div>
+            <div class="product-img reveal">
+                <img src="{{ product.photo_url }}" alt="{{ product.product_name }}">
+            </div>
+
+            <p id="product_id" style="display:none;">{{ product.product_id }}</p>
+            
+            <div class="details-card reveal">
+                <h2>Product Details</h2>
+                <table class="details-table">
+                    <tr><td>FSSAI License</td><td>{{ product.fssai_license }}</td></tr>
+                    <tr><td>Organic Certified</td><td>{{ product.organic_certified }}</td></tr>
+                    <tr><td>Moisture</td><td>{{ product.moisture }}</td></tr>
+                    <tr><td>Crop Year</td><td>{{ product.crop_year }}</td></tr>
+                    <tr><td>Packaging</td><td>{{ product.packaging }}</td></tr>
+                    <tr><td>Supply Capacity</td><td>{{ product.supply_capacity }}</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- RIGHT SECTION -->
+        <div>
+            <div class="reveal">
+                <span class="badge green">Verified Supplier</span>
+                <span class="badge gray">Farm Fresh Produce</span>
+            </div>
+
+            <h1 class="reveal">{{ product.product_name }}</h1>
+
+            <div class="price reveal">
+                ₹{{ product.price_per_kg }} <span class="subtext">per Kg</span>
+            </div>
+
+            <div class="subtext reveal">
+                Quantity Available: {{ product.quantity }} Kg
+            </div>
+
+            <div class="subtext reveal">
+                Location: {{ product.location }}
+            </div>
+
+            <div class="subtext reveal">
+                Delivery: {{ product.delivery }}
+            </div>
+
+            <p class="desc reveal">
+                High-quality {{ product.product_name }} supplied directly from farmers.
+            </p>
+
+            <div class="chart-card reveal">
+                <div class="chart-header">
+                    <h2>Biddings from Last 30 Days</h2>
+                    <span class="growth">+4.5% ↑</span>
+                </div>
+                <canvas id="bidChart"></canvas>
+            </div>
+
+            <!-- BID SECTION (ONLY FOR NON-OWNER) -->
+            {% if not product.isowner %}
+            <div class="bid-card reveal">
+                <h2>Place Your Bid</h2>
+                <div class="bid-row">
+                    <input type="number" placeholder="Quantity (Kg)">
+                    <input type="number" placeholder="Your Price (₹/Kg)">
+                </div>
+
+                <p id="quantityhidden" style="display:none;">{{ product.quantity }}</p>
+                <button type="button" onclick="placebid(event)">Submit Bid</button>
+            </div>
+            {% else %}
+            <!-- OWNER VIEW -->
+            <div class="bid-card reveal owner-view">
+                <h2>Your Product</h2>
+                <p class="subtext">
+                    You are the owner of this product. Bidding is disabled.
+                </p>
+                <button type="button" onclick="window.location.href='/transactions/mybiddings/?product={{ product.product_id }}'">
+                    View All Biddings
+                </button>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {{ history|json_script:"history-data" }}
+
+</div>
+
+<script src="{% static 'scripts/product.js' %}"></script>
+</body>
+</html>

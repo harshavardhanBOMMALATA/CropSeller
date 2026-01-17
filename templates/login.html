@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CropSeller</title>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+</head>
+<body>
+
+<div class="login-container">
+    <h2>CropSeller Login</h2>
+
+    <form method="post" id="loginForm">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button id="loginBtn">
+            <span id="btnText">Login</span>
+            <div class="spinner" id="spinner"></div>
+        </button>
+    </form>
+
+    <div class="signup-link">
+        Don't have an account?
+        <a onclick="signup()" style="cursor: pointer;">Create account</a>
+    </div>
+    <div class="footer-text" id="failuremessage">
+    </div>
+    <div class="footer-text">
+        Agriculture Product Selling Platform
+    </div>
+</div>
+
+<script src="{% static 'scripts/login.js' %}"></script>
+<script>
+    function signup(){
+        window.location.href='signup/';
+    }
+</script>
+
+</body>
+</html>

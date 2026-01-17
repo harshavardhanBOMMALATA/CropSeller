@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/myproducts.css' %}">
+</head>
+
+<body>
+
+<div class="header">
+    <h2>My Products</h2>
+    <button class="add-btn" onclick="window.location.href='/product/addproduct/'">
+        + Add Product
+    </button>
+</div>
+
+<div class="container">
+
+    <div class="search-bar">
+        <input id="searchInput" type="text" placeholder="Search by product name">
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="current">Current</button>
+        <button class="filter-btn" data-filter="past">Past</button>
+    </div>
+
+    <div class="grid" id="grid">
+        {% for p in products %}
+        <div class="card" data-status="current">
+
+        <img src="{{ p.photo_url|default:'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }}"
+        alt="{{ p.product_name }}"
+        loading="lazy"
+        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1567306226416-28f0efdc88ce';"/>
+
+            <div class="card-body">
+                <h4>{{ p.product_name }}</h4>
+                <div class="row">
+                    <span>Price</span>
+                    <span>₹{{ p.price_per_kg }} / kg</span>
+                </div>
+                <div class="row">
+                    <span>Quantity</span>
+                    <span>{{ p.quantity }} kg</span>
+                </div>
+
+                {% if p.enddate == 'end' %}
+                <div class="status current" style="color: red;">Bidding Ended</div>
+                {% elif p.enddate == 'start' %}
+                <div class="status listing">Listing</div>
+                {% endif %}
+
+            </div>
+            <div class="actions">
+
+                <button class="view-btn">
+                    <a href="{% url 'product_detail' p.product_id %}" style="text-decoration:none; color:inherit; display:block;">View</a>
+                </button>
+
+                <button class="edit-btn">
+                    <a href="{% url 'editproduct' p.product_id %}" style="text-decoration:none; color:inherit; display:block;">Edit</a>
+                </button>
+
+                <button class="bid-btn">
+                    <a href="{% url 'allbiddings' p.product_id %}" style="text-decoration:none; color:inherit; display:block;">See All Biddings</a>
+                </button>
+
+                <button class="bid-btn">
+                    <a onclick="endbid({{ p.product_id }})" style="text-decoration:none; color:rgb(255, 255, 255); display:block;">End Biddings</a>
+                </button>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+<script>
+
+function endbid(product_id){
+    fetch(`/transactions/myproducts/endbid/${product_id}/`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            showNotification("End Bidding successfully")
+        } else {
+            showNotification("Something Error Happening Please Try Another")
+        }
+    })
+    .catch(e => {
+        console.log("error");
+    });
+}
+
+function showNotification(message){
+    const note = document.createElement("div");
+    note.innerText = message;
+
+    note.style.position = "fixed";
+    note.style.bottom = "20px";
+    note.style.right = "20px";
+    note.style.background = "red";
+    note.style.color = "#fff";
+    note.style.padding = "12px 18px";
+    note.style.borderRadius = "8px";
+    note.style.fontSize = "14px";
+    note.style.zIndex = "9999";
+    note.style.boxShadow = "0 6px 15px rgba(0,0,0,0.2)";
+
+    document.body.appendChild(note);
+
+    setTimeout(() => {
+        note.remove();
+    }, 3000);
+}
+</script>
+
+<script src="{% static 'scripts/myproducts.js' %}"></script>
+</body>
+</html>
