@@ -13,18 +13,31 @@ from django.db import models
 @csrf_exempt
 def user_login(request):
     if request.method != 'POST':
-        return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+        return JsonResponse(
+            {'status': 'error', 'message': 'Invalid request'},
+            status=405
+        )
 
-    data = json.loads(request.body)
-    email = data.get('username')   # you are sending email/username
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except Exception:
+        return JsonResponse(
+            {'status': 'fail', 'message': 'Invalid JSON'},
+            status=400
+        )
+
+    email = data.get('username')
     password = data.get('password')
+
+    if not email or not password:
+        return JsonResponse(
+            {'status': 'fail', 'message': 'Missing credentials'},
+            status=400
+        )
 
     try:
         user = User.objects.get(email=email, password=password)
-
-        # store in session
-        request.session['email'] = email
-
+        request.session['email'] = user.email
         return JsonResponse({'status': 'success'})
     except User.DoesNotExist:
         return JsonResponse({'status': 'fail'})
