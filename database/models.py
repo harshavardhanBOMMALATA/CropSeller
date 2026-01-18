@@ -13,10 +13,6 @@ class User(models.Model):
     email = models.EmailField(max_length=255)
     photo = models.CharField(max_length=255)
 
-    class Meta:
-        db_table = "users"
-        managed = False
-
     def __str__(self):
         return self.name
 
@@ -50,9 +46,7 @@ class Product(models.Model):
     supply_capacity = models.CharField(max_length=200)
     enddate = models.CharField(max_length=200)
 
-    class Meta:
-        db_table = "products"
-        managed = False
+
 
     def __str__(self):
         return self.product_name
@@ -81,9 +75,6 @@ class Bidding(models.Model):
     created_time = models.CharField(max_length=100)
     verdict = models.CharField(max_length=20)
 
-    class Meta:
-        db_table = "biddings"
-        managed = False
 
     def __str__(self):
         return self.bidding_id
@@ -115,9 +106,7 @@ class Order(models.Model):
 
     verdict = models.CharField(max_length=20)
 
-    class Meta:
-        db_table = "orders"
-        managed = False
+
 
     def __str__(self):
         return self.order_id
@@ -140,9 +129,6 @@ class Transaction(models.Model):
     status = models.CharField(max_length=20)
     transaction_date = models.DateTimeField()
 
-    class Meta:
-        db_table = "transactions"
-        managed = False
 
     def __str__(self):
         return self.transaction_id
@@ -177,9 +163,6 @@ class Transportation(models.Model):
     destination_latitude = models.DecimalField(max_digits=10, decimal_places=7)
     destination_longitude = models.DecimalField(max_digits=10, decimal_places=7)
 
-    class Meta:
-        db_table = "transportation"
-        managed = False
 
     def __str__(self):
         return self.transportation_id
