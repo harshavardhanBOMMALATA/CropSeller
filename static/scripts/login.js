@@ -1,3 +1,8 @@
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm");
     const btn = document.getElementById("loginBtn");
@@ -21,7 +26,8 @@ loginBtn.addEventListener("click", function (event) {
     fetch('/database/user/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFToken' : getCSRFToken()
         },
         body: JSON.stringify({
             username: username,
